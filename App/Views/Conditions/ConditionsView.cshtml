@@ -1,0 +1,50 @@
+@model IEnumerable<ConditionsModel>
+@{
+   
+        ViewBag.Title = "Conditions";
+        Layout = "_Layout";
+}
+
+
+<div class="login-form">
+    <div class="row">
+         <div class="col-6">
+            <table class="table table-sm table-striped table-bordered m-8">
+                <thead><tr><th>Name</th><th>Description</th><th>Actions</th></tr></thead>
+                <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>@r.CdnName</td>
+                        <td>@r.CdnDescription</td>
+                        <td>
+                            <a asp-action="deleteConditions" asp-route-id="@r.CdnId">
+                                <i class="fa fa-trash" style="color: red;margin: 0px 45%; display: block;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+         <div class="col-6">
+            <form asp-action="createConditions" method="post">
+                        <fieldset>
+                                <legend class="text-center">Add conditions</legend>
+                                <div class="form-group">
+                                        <label for="cdnName">Condition Name:</label>
+                                        <input class="form-control" type="text" name="cdnName" required="required"/>
+                                    </div>
+                                <div class="form-group">
+                                        <label for="cdnDescription">Condition Description:</label>
+                                        <input class="form-control" type="text" name="cdnDescription" required="required"/>
+                                    </div>
+                                <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-block">Add condition</button>
+                                   </div>
+                            </fieldset>
+                    </form>
+        </div>
+    </div>
+    
+</div>

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Patients>
+@{ Layout = "_Layout"; ViewBag.Title = "My Patients";}
+
+<h2>My Patients</h2>
+
+<div class="form-group">
+    <table id="allPatientsTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Gender</th>
+                <th>Heigth</th>
+                <th>Weigth</th>
+                <th>Smoker</th>
+                <th>Pregnant</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patient in Model)
+            {
+                <tr>
+                    <td>@patient.PatLastName</td>
+                    <td>@patient.PatFirstName</td>
+                    <td>@patient.Gdr.GdrName</td>
+                    <td>@patient.PatHeight</td>
+                    <td>@patient.PatWeight</td>
+                    <td>
+                        @if (patient.PatIsSmoker == 1)
+                        {
+                            <i class="far fa-check-circle" style="color: green"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-times-circle" style="color: red"></i>
+                        } 
+                    </td>
+                    <td>
+                        @if (patient.PatIsPregnant.ToString() == "1")
+                        {
+                            <i class="far fa-check-circle" style="color: green"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-times-circle" style="color: red"></i>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="form-group">
+    <button id="addReportButton" onclick="@("window.location.href='" + @Url.Action("CreatePatient", "Patients") + "'");" class="btn btn-primary">New Patient</button>
+</div>
+
+<link rel="stylesheet" href="~/css/datatables/datatables.css" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery/datatables/datatables.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#allReportsTable').DataTable({
+            "sDom": "lrti"
+        });
+
+        $('#allReportsTable').on('length.dt', function (e, settings, len) {
+            console.log('New page length: ' + len);
+            console.log(settings)
+        });
+    });
+
+
+</script>

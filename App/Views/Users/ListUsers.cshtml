@@ -1,0 +1,37 @@
+@model IEnumerable<Users>
+@{ Layout = "_Layout"; ViewBag.Title = "Users management";}
+
+
+<div class="card m-2">
+  <div class="card-header">
+    <h2>All Users</h2>
+  </div>
+  <table class="table table-sm table-striped table-bordered m-8">
+      <thead><tr><th>ID</th><th>Email</th><th>FirstName</th><th>LastName</th><th>Actions</th></tr></thead>
+      <tbody>
+      @foreach (var r in Model)
+      {
+          <tr>
+              <td>@r.UsrId</td>
+              <td>@r.UsrEmail</td>
+              <td>@r.UsrFirstName</td>
+              <td>@r.UsrLastName</td>
+              <td>
+                  @if (@r.UsrActive == 0)
+                      {
+                          <a asp-controller="Users" asp-action="ActivateUser" asp-route-userId="@r.UsrId">
+                              <i class="far fa-check-circle" style="color: green"></i>
+                          </a>
+                      }
+                  else 
+                      {
+                          <a asp-controller="Users" asp-action="ActivateUser" asp-route-userId="@r.UsrId">
+                              <i class="far fa-times-circle" style="color: red"></i>
+                          </a>
+                      }
+              </td>
+          </tr>
+      }
+      </tbody>
+  </table>
+</div>

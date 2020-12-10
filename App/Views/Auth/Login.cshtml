@@ -1,0 +1,42 @@
+@using System.ComponentModel.DataAnnotations
+@model IEnumerable<AuthModel>
+
+
+@{
+    ViewBag.Title = "All Users";
+    var data = ViewBag.error;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <div class="login-form">
+        <form action="/Auth/OnPost" method="post">
+            
+            <fieldset>
+                <legend class="text-center">Sign in</legend>
+                <div class="form-group">
+                    <label for="Login">Login:</label>
+                    <input class="form-control" type="text" name="Login" required="required" />
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password</label>
+                    <input type="password" class="form-control" name="Password" required="required" />
+                </div>
+                <div class="form-group">
+                    <p class="text-center alert-danger">@data</p>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                </div>
+            </fieldset>
+        </form>
+        <a href="/Auth/Register" class="Button nav-link text-dark">Register</a>
+    </div>
+</body>
+</html>

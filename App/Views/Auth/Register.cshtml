@@ -1,0 +1,183 @@
+﻿@using App.Models.ViewModels
+
+@model RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+    <div id="accountTypeButtons" class="row" style="margin-top: 30vh">
+        <div class="col-6">
+            <button id="doctorButton" class="btn btn-primary btn-block">I'm a Medical Doctor</button>
+        </div>
+        <div class="col-6">
+            <button id="adminButton" class="btn btn-danger btn-block">I'm an Admin</button>
+        </div>
+    </div>
+    <div id="registerForm" class="login-form" style="display: none; margin-top: 50px">
+        <form id="register" asp-action="RegisterPost" method="post">
+            <fieldset>
+                <legend class="text-center"><i class="fa fa-user-md" aria-hidden="true"></i>  Your New DocNet Account</legend>
+                <input id="roleInput" type="hidden" name="Role" />
+                <input id="creatingPracticeInput" type="hidden" name="CreatingPractice" />
+                <div class="form-group">
+                    <div class="row" style="margin-top: 50px">
+                        <div class="col-6">
+                            <label for="FirstName">First Name:</label>
+                            <input id="firstNameInput" class="form-control" type="text" name="FirstName" required="required" />
+                        </div>
+                        <div class="col-6">
+                            <label for="LastName">Last Name:</label>
+                            <input id="lastNameInput" class="form-control" type="text" name="LastName" required="required" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Email">Email:</label>
+                    <input id="emailInput" class="form-control" type="text" name="Email" required="required" />
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="Password">Password:</label>
+                            <input id="passwordInput" type="password" class="form-control" name="Password" required="required" />
+                        </div>
+                        <div class="col-6">
+                            <label for="PasswordConfirmation">Password Confirmation:</label>
+                            <input id="passwordConfirmationInput" type="password" class="form-control" name="PasswordConfirmation" required="required" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Gender">Gender:</label>
+                    @foreach (var gender in Model.Genders)
+                    {
+                        <input asp-for="Genders" name="Genders" type="radio" value="@gender.GdrId" style="margin-left: 20px" required /> @gender.GdrName
+                    }
+                </div>
+                <div id="practiceSelect" class="form-group">
+                    <label for="Practice">Practice:</label>
+                    <select id="practiceSelect" class="form-control" asp-for="Practices" size="3"
+                            asp-items="@(new SelectList(Model.Practices,"PtcId","PtcName"))">
+                    </select>
+                    <a id="createPracticeLink" href="#" class="Button nav-link text-dark"><i class="fa fa-plus" aria-hidden="true"></i>  Add your Practice</a>
+                </div>
+                <div id="createPracticeForm" class="form-group" style="display: none;">
+                    <div class="form-group">
+                        <label for="PracticeName">Practice Name:</label>
+                        <input id="practiceNameInput" class="form-control" type="text" name="PracticeName" required="required" />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="Address">Address:</label>
+                                <input id="addressInput" type="text" class="form-control" name="PracticeAddress" required="required" />
+                            </div>
+                            <div class="col-4">
+                                <label for="City">City:</label>
+                                <input id="cityInput" type="text" class="form-control" name="PracticeCity" required="required" />
+                            </div>
+                            <div class="col-4">
+                                <label for="ZipCode">ZIP Code:</label>
+                                <input id="zipCodeInput" type="text" class="form-control" name="PracticeZipCode" required="required" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button id="submitButton" type="submit" class="btn btn-primary btn-block">Create Account</button>
+                </div>
+            </fieldset>
+        </form>
+        <div id="lastNameAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please tell us your Last Name
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="firstNameAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please tell us your First Name
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="shortPasswordAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Your password must be at least 6 characters long
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="emptyEmailAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please tell us your E-mail Address
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="emailAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            This e-mail address is already in use
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="passwordAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Passwords don't match
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="genderAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please tell us your Gender
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="practiceAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please pick or create a Practice
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="practiceNameAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please tell us the Name of your Practice
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="addressAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please tell us the Address of your Practice
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="cityAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please tell us the City of your Practice
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="zipCodeAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please tell us the Zip Code of your Practice
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="practiceExistsAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            This Practice already exists
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/register.js"></script>

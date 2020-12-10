@@ -1,0 +1,174 @@
+﻿@{ Layout = "_Layout"; ViewBag.Title = "New Report";}
+@using App.Models.ViewModels
+
+@model CreateReportViewModel
+
+@{
+    ViewBag.Title = "New Report";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>New Report</title>
+</head>
+
+<body>
+    <div id="createReport" style="margin-top: 50px">
+        <form id="createReportForm" asp-action="CreateReportPost" method="post">
+            <fieldset>
+                <legend class="text-center"><i class="fa fa-id-badge" aria-hidden="true" style="margin-right: 15px"></i>New Report</legend>
+                <div class="form-group">
+                    <label for="Patients">Patient:</label>
+                    <select id="patientSelect" class="form-control" asp-for="Patients" size="3"
+                            asp-items="@(new SelectList(Model.Patients,"PatId","PatLastName"))">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="Conditions">Condition:</label>
+                            <select id="conditionSelect" class="form-control" asp-for="Conditions" size="3"
+                                    asp-items="@(new SelectList(Model.Conditions,"CdnId","CdnName"))">
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="Treatments">Treatment:</label>
+                            <select id="treatmentSelect" class="form-control" asp-for="Treatments" size="3"
+                                    asp-items="@(new SelectList(Model.Treatments,"TmtId","TmtName"))">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="Rating">Success Rating:</label>
+                            <input id="ratingInput" class="form-control" type="number" min="0" max="100" placeholder="Rate from 0 to 100..." name="Rating" required="required" />
+                        </div>
+                        <div class="col-6">
+                            <label for="Comment">Comment:</label>
+                            <textarea id="commentInput" class="form-control" name="Comment" maxlength="500" style="min-height: 150px; max-height: 300px;" placeholder="Write a comment..." required="required"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <button id="backButton"
+                                    class="btn btn-danger btn-block"
+                                    onclick="@("window.location.href='" + @Url.Action("ListReports", "Reports") + "'");">
+                                Go Back
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button id="submitButton" type="submit" class="btn btn-primary btn-block">Create Report</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <div id="patientAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please pick a Patient
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="conditionAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please Pick a Condition
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="treatmentAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please pick a Treatment
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="ratingAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Please rate Treatment success
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="ratingValueAlert" class="alert alert-danger alert-dismissible" style='display:none;'>
+            Rating must be between 0 and 100
+            <button data-dismiss="alert" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#submitButton').click(function (event) {
+
+            event.preventDefault();
+
+            var patientSelectIsEmpty = !$("#patientSelect option:selected").length;
+            var conditionSelectIsEmpty = !$("#conditionSelect option:selected").length;
+            var treatmentSelectIsEmpty = !$("#treatmentSelect option:selected").length;
+            var rating = $("#ratingInput").val();
+            var ratingInputIsEmpty = !rating.length;
+
+            if (patientSelectIsEmpty) {
+
+                $("#patientAlert").fadeTo(1000, 500).slideUp(700, function () {
+                    $("#patientAlert").slideUp(500);
+                });
+
+                return;
+            }
+
+            if (conditionSelectIsEmpty) {
+
+                $("#conditionAlert").fadeTo(1000, 500).slideUp(700, function () {
+                    $("#conditionAlert").slideUp(500);
+                });
+
+                return;
+            }
+
+            if (treatmentSelectIsEmpty) {
+
+                $("#treatmentAlert").fadeTo(1000, 500).slideUp(700, function () {
+                    $("#treatmentAlert").slideUp(500);
+                });
+
+                return;
+            }
+
+            if (ratingInputIsEmpty) {
+
+                $("#ratingAlert").fadeTo(1000, 500).slideUp(700, function () {
+                    $("#ratingAlert").slideUp(500);
+                });
+
+                return;
+            }
+
+            if (rating < 0 || rating > 100) {
+
+                $("#ratingValueAlert").fadeTo(1000, 500).slideUp(700, function () {
+                    $("#ratingValueAlert").slideUp(500);
+                });
+
+                return;
+            }
+
+            $("#createReportForm").submit();
+        });
+    });
+
+</script>

@@ -1,0 +1,97 @@
+﻿@{
+	ViewBag.Title = "All Reservations";
+	var isPatient = ViewBag.isPatient;
+}
+ 
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script>
+window.onload = function () {
+ 
+var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2",
+	exportEnabled: false,
+	animationEnabled: true,
+	title: {
+		text: "Total record",
+		fontSize: 21
+	},
+	data: [{
+		type: "pie",
+		startAngle: 160,
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints: @Html.Raw(ViewBag.DataPointsTotalRecord)
+	}]
+});
+chart.render();
+
+var chartPatience = new CanvasJS.Chart("chartPatience", {
+                    	animationEnabled: true,
+                    	title: {
+                    		text: "Patients",
+                    		fontSize: 21
+                    	},
+                    	data: [{
+                    		type: "doughnut",
+                    		startAngle: 60,
+                    		indexLabelFontSize: 16,
+                    		indexLabel: "{label} - {y}",
+                    		toolTipContent: "<b>{label}:</b> {y}",
+                    		dataPoints: @Html.Raw(ViewBag.DataPoints)
+                    	}]
+                    });
+  chartPatience.render();
+ 
+  var chartReports = new CanvasJS.Chart("chartReports", {
+  	animationEnabled: true,
+  	theme: "light2", // "light1", "light2", "dark1", "dark2"
+  	title: {
+		text: "Number of cases by conditions",
+		fontSize: 21
+	},
+  	axisY: {
+  		title: "Number of cases"
+  	},
+  	data: [{        
+  		type: "column",  
+  		showInLegend: true, 
+  		legendMarkerColor: "grey",
+  		legendText: "Conditions",
+  		dataPoints: @Html.Raw(ViewBag.DataPointsReports)
+  	}]
+  });
+  chartReports.render();
+}
+</script>
+</head>
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-sm">
+			<div id="chartContainer" style="height: 285px; width: 100%;"></div>
+		</div>
+	  
+		@if (@isPatient == true)
+		{
+			<div class="col-sm">
+				<div id="chartPatience" style="height: 285px; width: 100%;"></div>  
+		  
+			</div>
+		}	
+	
+	</div>
+	<br/>
+  <div class="row">
+  		<div class="col-md">
+  			<div id="chartReports" style="height: 285px; width: 100%;"></div>
+  		</div>
+  	</div>
+</div>
+ <br/>
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+</body>
+</html>                              

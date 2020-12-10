@@ -1,0 +1,126 @@
+﻿@{ Layout = "_Layout"; ViewBag.Title = "New Patient";}
+@using App.Models.ViewModels
+
+@model CreatePatientViewModel
+
+@{
+    ViewBag.Title = "New Patient";
+}
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<head>
+    <title>New Report</title>
+</head>
+
+<body>
+    <div id="createPatient" style="margin-top: 50px">
+        <form id="createPatientForm" asp-action="CreatePatientPost" method="post">
+            <fieldset>
+                <legend class="text-center"><i class="fa fa-id-badge" aria-hidden="true" style="margin-right: 15px"></i>New Patient</legend>
+                
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="FirstName">FirstName:</label>
+                            <input name="FirstName" type="text" class="form-control" placeholder="" aria-label="LastName" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-6">
+                            <label for="LastName">LastName:</label>
+                            <input name="LastName" type="text" class="form-control" placeholder="" aria-label="LastName" aria-describedby="basic-addon1">
+                        </div>
+                     </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="Gender">Gender:</label>
+                            <select name="Gender"  id="Gender" class="form-control" asp-for="Genders" size="3"
+                                    asp-items="@(new SelectList(Model.Genders,"GdrId","GdrName"))">
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="Practice">Practice:</label>
+                            <select name="Practice" id="Practice" class="form-control" asp-for="Practices" size="3"
+                                    asp-items="@(new SelectList(Model.Practices,"PtcId","PtcName"))">
+                            </select>
+                         </div>
+                     </div>
+                </div>
+          
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="Height">Height:</label>
+                            <input name="Height" type="number" class="form-control" placeholder="" aria-label="Height" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-6">
+                            <label for="Weight">Weight:</label>
+                            <input name="Weight" type="number" class="form-control" placeholder="" aria-label="Weight" aria-describedby="basic-addon1">
+                        </div>
+                     </div>
+                </div>
+          
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-check">
+                              <input name="Smoker" class="form-check-input" type="checkbox" id="Smoker">
+                              <label class="form-check-label" for="Smoker">
+                                Smoker
+                              </label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-check">
+                              <input name="Pregnant" class="form-check-input" type="checkbox" id="Pregnant">
+                              <label class="form-check-label" for="Pregnant">
+                                Pregnant
+                              </label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-check-label" for="Date">
+                                Born:
+                            </label>
+                            <input name="Date" class="form-control" type="text" id="datepicker">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <a id="backButton"
+                                    class="btn btn-danger btn-block"
+                                    onclick="@("window.location.href='" + @Url.Action("ListPatients", "Patients") + "'");">
+                                Go Back
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <button id="submitButton" type="submit" class="btn btn-primary btn-block">Create Patient</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</body>
+
+</html>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+
+    $( function() {
+        $( "#datepicker" ).datepicker();
+    } );
+
+</script>
